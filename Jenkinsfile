@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         IMAGE_NAME = "hu-2025-docker-rsingh95-backend:v1"
-        REGISTRY_IMAGE = "placeholder/hu-2025-docker-rsingh95-backend:v1" 
     }
 
     stages {
@@ -46,7 +45,9 @@ pipeline {
 
         stage('Push to Registry') {
             steps {
-                sh 'docker push $REGISTRY_IMAGE'
+                script {
+                    sh "docker push $REGISTRY_IMAGE"
+                }
             }
         }
     }
