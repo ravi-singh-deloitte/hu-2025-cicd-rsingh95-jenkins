@@ -5,7 +5,7 @@ WORKDIR /app
 COPY backend-service/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY backend-service/ .
+COPY backend-service /app
 
 EXPOSE 5000
 
