@@ -5,6 +5,11 @@ pipeline {
         IMAGE_NAME = "hu-2025-docker-rsingh95-backend-1:v1"
     }
 
+    triggers {
+        cron('H/5 * * * *')
+    }
+
+
     stages {
         stage('Checkout') {
             steps {
