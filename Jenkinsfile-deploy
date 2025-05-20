@@ -1,0 +1,33 @@
+
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME = "hu-2025-docker-rsingh95-backend-4:v1"
+        CONTAINER_NAME = "hu-2025-rsingh95-backend-4"
+    }
+
+    stages {
+        stage('Login to Registry') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh 'echo $PASSWORD | docker login -u $USERNAME --password-stdin'
+                }
+            }
+        }
+
+        stage('Deploy Application') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    script {
+                        def registryImage = "${USERNAME}/${IMAGE_NAME}"
+                        sh "docker stop $CONTAINER_NAME || true"
+                        sh "docker rm $CONTAINER_NAME || true"
+                        sh "docker pull $registryImage"
+                        sh "docker run -d --name $CONTAINER_NAME -p 8000:5000 $registryImage"
+                    }
+                }
+            }
+        }
+    }
+}
