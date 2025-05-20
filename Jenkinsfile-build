@@ -30,9 +30,8 @@ pipeline {
                     script {
                         def registryImage = "${USERNAME}/${IMAGE_NAME}"
                         sh "docker tag $IMAGE_NAME $registryImage"
-                        sh """docker login -u $USERNAME --password-stdin << EOF $PASSWORD EOF
-                        docker push $registryImage
-                        """
+                        sh "docker login -u $USERNAME --password-stdin <<< $PASSWORD"
+                        sh "docker push $registryImage"
                     }
                 }
             }
