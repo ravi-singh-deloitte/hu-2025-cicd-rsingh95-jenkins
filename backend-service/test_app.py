@@ -8,4 +8,4 @@ def test_home_status_code():
 def test_home_content():
     client = app.test_client()
     response = client.get('/')
-    assert b'Hello from Jenkins CI/CD!' in response.data
+    assert b'Hello from Jenkins CI/CD! and Ravi Singh' in response.data
