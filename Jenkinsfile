@@ -2,9 +2,8 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "hu-2025-docker-rsingh95-backend:v1"
-        REGISTRY_IMAGE = "" 
-        CONTAINER_NAME = "hu-2025-rsingh95-backend"
+        IMAGE_NAME = "hu-2025-docker-rsingh95-backend-3:v1"
+        CONTAINER_NAME = "hu-2025-rsingh95-backend-3"
     }
 
     stages {
@@ -30,7 +29,8 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     script {
-                        env.REGISTRY_IMAGE = "${USERNAME}/hu-2025-docker-rsingh95-backend:v1"
+                        def registryImage = "${USERNAME}/${IMAGE_NAME}"
+                        env.REGISTRY_IMAGE = registryImage
                         sh "docker tag $IMAGE_NAME $REGISTRY_IMAGE"
                     }
                 }
