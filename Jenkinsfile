@@ -3,6 +3,8 @@ pipeline {
 
     environment {
         IMAGE_NAME = "hu-2025-docker-rsingh95-backend:v1"
+        REGISTRY_IMAGE = "" 
+        CONTAINER_NAME = "hu-2025-rsingh95-backend"
     }
 
     stages {
@@ -45,8 +47,17 @@ pipeline {
 
         stage('Push to Registry') {
             steps {
+                sh 'docker push $REGISTRY_IMAGE'
+            }
+        }
+
+        stage('Deploy Application') {
+            steps {
                 script {
-                    sh "docker push $REGISTRY_IMAGE"
+                    sh "docker stop $CONTAINER_NAME"
+                    sh "docker rm $CONTAINER_NAME"
+                    sh "docker pull $REGISTRY_IMAGE"
+                    sh "docker run -d --name $CONTAINER_NAME -p 8000:5000 $REGISTRY_IMAGE"
                 }
             }
         }
