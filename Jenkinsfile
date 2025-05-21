@@ -75,12 +75,7 @@ pipeline {
                     Status: ${currentBuild.currentResult}
                     Actor: ${env.BUILD_USER_ID}
                     Details: ${env.BUILD_URL}
-                """,
-                facts: [
-                    [name: 'Job', value: env.JOB_NAME],
-                    [name: 'Build Number', value: env.BUILD_NUMBER],
-                    [name: 'Triggered By', value: env.BUILD_USER_ID]
-                ]
+                """
             )
         }
     }
