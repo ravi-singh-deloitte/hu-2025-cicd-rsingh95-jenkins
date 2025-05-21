@@ -1,0 +1,36 @@
+jenkins:
+  systemMessage: "Jenkins Configured as Code"
+  numExecutors: 2
+
+  credentials:
+    system:
+      domainCredentials:
+        - credentials:
+            - usernamePassword:
+                scope: GLOBAL
+                id: "docker-creds"
+                description: "Credentials for Docker Hub"
+
+unclassified:
+  location:
+    url: "http://localhost:8080/"  
+    adminAddress: "rsingh95@deloitte.com"
+
+jobs:
+  - script: >
+      pipelineJob("hu-2025-rsingh95-pipeline-task-5") {
+        definition {
+          cpsScm {
+            scm {
+              git {
+                remote {
+                  url("https://github.com/ravi-singh-deloitte/hu-2025-cicd-rsingh95-jenkins.git")  
+                }
+                branch("task-5") 
+              }
+            }
+            scriptPath("Jenkinsfile")  
+          }
+        }
+      }
+
