@@ -65,18 +65,21 @@ pipeline {
 
     post {
         always {
-            office365ConnectorSend(
-                webhookUrl: 'https://deloitte.webhook.office.com/webhookb2/d6ec191f-9653-4bc6-9995-e7bc47ca8037@36da45f1-dd2c-4d1f-af13-5abe46b99921/IncomingWebhook/889dbf714cdf4437bd34a074bcaae257/ba21d169-adfc-4a72-ab8b-2a830d095170/V2YOUNwjZxExykprOuRMHKisZ77RXJckd2DyPdo-ZL4ew1',
-
-                status: currentBuild.currentResult,
-                message: """
-                    Build ${currentBuild.currentResult} for ${env.JOB_NAME} (${env.BUILD_NUMBER})
-                    Event: ${env.BUILD_CAUSE}
-                    Status: ${currentBuild.currentResult}
-                    Actor: ${env.BUILD_USER_ID}
-                    Details: ${env.BUILD_URL}
-                """
-            )
+            script {
+                   wrap([$class: 'BuildUser']) {
+                    office365ConnectorSend(
+                        webhookUrl: 'https://deloitte.webhook.office.com/webhookb2/d6ec191f-9653-4bc6-9995-e7bc47ca8037@36da45f1-dd2c-4d1f-af13-5abe46b99921/IncomingWebhook/889dbf714cdf4437bd34a074bcaae257/ba21d169-adfc-4a72-ab8b-2a830d095170/V2YOUNwjZxExykprOuRMHKisZ77RXJckd2DyPdo-ZL4ew1',
+                        status: currentBuild.currentResult,
+                        message: """
+                            JobName: ${env.JOB_NAME}
+                            Build Id : ${env.BUILD_NUMBER}
+                            Event: ${currentBuild.buildCauses.shortDescription.join(', ')}
+                            Status: ${currentBuild.currentResult}
+                            Actor: ${env.BUILD_USER_ID}
+                            """
+                    )
+               }
+            }
         }
     }
 }
