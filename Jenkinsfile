@@ -57,7 +57,7 @@ pipeline {
                     sh "docker stop $CONTAINER_NAME || true"
                     sh "docker rm $CONTAINER_NAME || true"
                     sh "docker pull $REGISTRY_IMAGE"
-                    sh "docker run -d --name $CONTAINER_NAME -p 8000:5000 $REGISTRY_IMAGE"
+                    sh "docker run -d --name $CONTAINER_NAME -p 8001:5000 $REGISTRY_IMAGE"
                 }
             }
         }
